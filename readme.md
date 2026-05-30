@@ -9,6 +9,23 @@ __Backtracking(Python):__ Enemy path avoiding active towers
 __C++ List:__ Enemy wave queue
 __C++ thee:__ Tower registry (BST)
 
+
+project/
+engine/ C++
+    linked_list.cpp
+    tree.cpp (BST or AVL, depending on variant)
+    main.cpp (reads input.json -> writes state.json)
+game/ Python
+    algorithms/ 
+        greedy.py
+        backtracking.py
+    ui/
+        main.py (Pygame grid + HUD)
+bridge.py (file I/O: reads state.json, writes input.json)
+data/
+    input.json
+    state.json
+
 • Working Game: A fully playable version of the game demonstrating all required
 components. The game must run from a single entry point (game/ui/main.py).
 • GitHub Repository: A public or shared repository following the required folder
@@ -32,7 +49,7 @@ library packages are the only allowed Python dependencies for the UI.
 JSON file I/O. No sockets, shared memory, or Python-C++ bindings are allowed.
 • All source files must include a header comment with team number, variant name, and
 student names.
-• The game grid must be at least 8 × 8 cells.
+• The game grid must be at least 9 × 9 cells.
 • The C++ linked list and tree must be implemented from scratch. Using std::list,
 std::map, std::set, or any equivalent STL container for the required structures is
 not allowed.
