@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "tick": 42,
+    "phase": "action",
+    "elapsed_seconds": 8.4,
+    "gold": 150,
+    "dt": 0.5
+  },
+  "castle": {
+    "id": "castle_0",
+    "hp": 200,
+    "hp_max": 200,
+    "pos": { "row": 0, "col": 4 },
+    "atk_range": 2,
+    "dmg": 15
+  },
+  "towers": [
+    {
+      "id": "tower_1",
+      "hp": 100,
+      "pos": { "row": 3, "col": 2 },
+      "atk_range": 2,
+      "dmg": 20
+    }
+  ],
+  "horde_queue": [
+    {
+      "id": "horde_0",
+      "size": 5,
+      "speed_override": null,
+      "path": [
+        { "row": 8, "col": 0 },
+        { "row": 7, "col": 0 },
+        { "row": 0, "col": 4 }
+      ],
+      "head_pos": { "row": 6, "col": 0 },
+      "enemies": [
+        {
+          "id": "enemy_0",
+          "hp": 60,
+          "hp_max": 80,
+          "pos": { "row": 6, "col": 0 },
+          "dmg": 10,
+          "atk_range": 1
+        },
+        {
+          "id": "enemy_1",
+          "hp": 80,
+          "hp_max": 80,
+          "pos": { "row": 7, "col": 0 },
+          "dmg": 10,
+          "atk_range": 1
+        }
+      ]
+    }
+  ]
+}
