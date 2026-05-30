@@ -34,7 +34,7 @@ Enemy::Enemy(const std::string& id,
 // Horde — constructor
 // =============================================================================
 Horde::Horde(const std::string& id, int speed, const std::vector<Pos>& path)
-    : id(id), head(nullptr), tail(nullptr), size(0), speed(speed), path(path)
+    : id(id), head(nullptr), tail(nullptr), size(0), speed(speed), path(path), head_path_index(0)
 {}
 
 // =============================================================================
@@ -77,6 +77,24 @@ void Horde::push_back(Enemy* enemy) {
     size++;
 }
 
+
+void Horde::updatePath(const std::vector<Pos>& new_path) {
+    // 1. Validación de seguridad: 
+    // Aseguramos que el nuevo camino sea coherente (comienza donde está la cabeza)
+    if (is_empty() || new_path.empty() || 
+       (new_path[0].row != head->pos.row || new_path[0].col != head->pos.col)) {
+        return; // O lanza una excepción, o loguea un error
+    }
+
+    // 2. Reemplazo directo (O(1) si usamos move, O(N) si copiamos)
+    // Esto descarta el camino antiguo y pone el nuevo.
+    this->path = new_path;
+
+    // 3. ¡La parte crucial! 
+    // Resetear el índice. Como el nuevo camino empieza en new_path[0],
+    // que es donde está la cabeza (head->pos), el índice ahora debe ser 0.
+    head_path_index = 0;
+}
 // =============================================================================
 // remove_head — elimina la cabeza (enemigo muerto) y promueve al siguiente
 //
@@ -102,6 +120,7 @@ Enemy* Horde::remove_head() {
     dead->next = nullptr;           
     dead->prev = nullptr;           // NUEVO: limpiamos el puntero prev del nodo retirado
     size--;
+    head_path_index--;
     return dead;                    
 }
 // =============================================================================
@@ -124,7 +143,7 @@ Enemy* Horde::remove_head() {
 //
 // Devuelve false si el head_path_index ya estaba al final (horda llegó al castillo).
 // =============================================================================
-bool Horde::advance(int& head_path_index) {
+bool Horde::advance() {
     if (is_empty()) return false;
 
     // ¿Queda algún paso en el path?
@@ -148,8 +167,9 @@ bool Horde::advance(int& head_path_index) {
     }
 
     // La cabeza avanza al siguiente paso del path de forma independiente.
-    head_path_index = next_index;
+    head_path_index++;
     head->pos = path[head_path_index];
+
 
     return true;
 }

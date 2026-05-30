@@ -47,12 +47,13 @@ struct Enemy {
 // Horde — la lista enlazada completa de una oleada
 // ---------------------------------------------------------------------------
 struct Horde {
-    std::string        id;
-    Enemy*             head;       // cabeza: el enemigo más adelantado (más cerca del castillo)
-    Enemy*             tail;       // cola:  el último en llegar
-    int                size;       // cantidad actual de enemigos vivos
-    int                speed;      // casillas que avanza por tick (calculado según tamaño)
-    std::vector<Pos>   path;       // ruta calculada por Python
+    std::string id;
+    Enemy* head;       // cabeza: el enemigo más adelantado (más cerca del castillo)
+    Enemy* tail;       // cola:  el último en llegar
+    int size;       // cantidad actual de enemigos vivos
+    int speed;      // casillas que avanza por tick (calculado según tamaño)
+    std::vector<Pos> path;       // ruta calculada por Python
+    int head_path_index;
 
     // Constructor / destructor
     Horde(const std::string& id, int speed, const std::vector<Pos>& path);
@@ -62,6 +63,8 @@ struct Horde {
 
     // Agrega un enemigo al final de la cola (nueva llegada a la horda)
     void push_back(Enemy* enemy);
+    
+    void updatePath(const std::vector<Pos>& new_path);
 
     // Elimina la cabeza (murió) y promueve al siguiente como nueva cabeza.
     // Devuelve el puntero al nodo eliminado para que el caller libere memoria o registre la recompensa.
@@ -70,7 +73,7 @@ struct Horde {
     // Mueve toda la horda un paso a lo largo del path.
     // La cabeza avanza a path[head_path_index], cada enemigo toma la pos del que tenía delante.
     // Devuelve false si la horda llegó al castillo (no hay más pasos en el path).
-    bool advance(int& head_path_index);
+    bool advance();
 
     // Utilidades
     bool  is_empty() const;
