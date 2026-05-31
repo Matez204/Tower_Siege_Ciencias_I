@@ -1,0 +1,67 @@
+# ============================================================
+# Tower Siege — Variant 1
+# Algorithm Developer: [nombre compañero]
+# Ciencias de la Computación I — 2026-I
+# Universidad Distrital Francisco José de Caldas
+# ============================================================
+
+# game/algorithms/greedy.py
+
+def evaluar_amenaza_greedy(torres_construidas, pos_spawn, pos_castillo, ruta_actual=None):
+    """
+    Sugiere la celda vacía con mayor amenaza para colocar la siguiente torre.
+
+    Estrategia greedy: recorre todas las celdas libres del tablero y calcula
+    la distancia Manhattan mínima a cualquier celda de la ruta enemiga actual.
+    La celda MÁS CERCANA a la ruta tiene mayor amenaza, porque una torre ahí
+    interrumpe el camino enemigo más eficientemente.
+
+    Si no hay ruta disponible, usa la línea Manhattan spawn→castillo como
+    referencia de amenaza (fallback).
+
+    Complejidad: O(n² · r) donde n=9 (lado del tablero) y r=longitud de ruta.
+    """
+    FILAS, COLS = 9, 9
+    celdas_bloqueadas = set(torres_construidas.keys()) | {pos_spawn, pos_castillo}
+
+    # Referencia de amenaza: ruta enemiga actual o línea directa spawn→castillo
+    if ruta_actual and len(ruta_actual) > 0:
+        referencia = ruta_actual
+    else:
+        referencia = _linea_manhattan(pos_spawn, pos_castillo)
+
+    mejor_celda    = None
+    menor_distancia = float('inf')
+
+    for f in range(FILAS):
+        for c in range(COLS):
+            if (f, c) in celdas_bloqueadas:
+                continue
+
+            # Distancia mínima de esta celda a cualquier punto de la ruta
+            dist_min = min(
+                abs(f - rf) + abs(c - rc)
+                for rf, rc in referencia
+            )
+
+            if dist_min < menor_distancia:
+                menor_distancia = dist_min
+                mejor_celda = (f, c)
+
+    return mejor_celda
+
+
+def _linea_manhattan(origen, destino):
+    """Genera celdas en línea Manhattan entre dos puntos (usado como fallback)."""
+    f, c = origen
+    pasos = []
+    paso_f = 1 if destino[0] > f else -1
+    paso_c = 1 if destino[1] > c else -1
+    while f != destino[0]:
+        pasos.append((f, c))
+        f += paso_f
+    while c != destino[1]:
+        pasos.append((f, c))
+        c += paso_c
+    pasos.append(destino)
+    return pasos
