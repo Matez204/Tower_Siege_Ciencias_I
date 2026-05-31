@@ -39,12 +39,11 @@ int main() {
     // 3. advance — mover la horda 2 pasos por el path
     // -------------------------------------------------------------------------
     std::cout << "\n--- Avanzando 2 pasos ---\n";
-    int head_idx = 0;   // la cabeza empieza en path[0] = (8,0)
 
-    horde.advance(head_idx);   // head_idx -> 1
+    horde.advance();   // head_idx -> 1
     horde.print_state();
 
-    horde.advance(head_idx);   // head_idx -> 2
+    horde.advance();   // head_idx -> 2
     horde.print_state();
 
     // Después de 2 avances:
@@ -84,7 +83,7 @@ int main() {
     // 6. advance sobre lista vacía — no debe crashear
     // -------------------------------------------------------------------------
     std::cout << "\n--- advance sobre horda vacía (no debe crashear) ---\n";
-    bool moved = horde.advance(head_idx);
+    bool moved = horde.advance();
     assert(moved == false);
     std::cout << "OK, devolvió false correctamente.\n";
 

@@ -16,6 +16,7 @@
 
 #include "linked_list.h"
 #include <iostream>
+#include <sstream>
 
 // =============================================================================
 // Enemy — constructor
@@ -34,7 +35,8 @@ Enemy::Enemy(const std::string& id,
 // Horde — constructor
 // =============================================================================
 Horde::Horde(const std::string& id, int speed, const std::vector<Pos>& path)
-    : id(id), head(nullptr), tail(nullptr), size(0), speed(speed), path(path), head_path_index(0)
+    : id(id), head(nullptr), tail(nullptr), size(0), speed(speed),
+      path(path), killed_ids(), head_path_index(0)
 {}
 
 // =============================================================================
@@ -182,8 +184,79 @@ bool Horde::is_empty() const {
 }
 
 // =============================================================================
-// print_state — muestra el estado actual de la horda (para debug)
+// Enemy::toJson
+// Formato esperado (según statePrueba.json):
+//   {"id":"enemy_1","hp":80,"pos":{"row":6,"col":0}}
 // =============================================================================
+std::string Enemy::toJson() const {
+    std::ostringstream oss;
+    oss << "{"
+        << "\"id\":\""  << id  << "\","
+        << "\"hp\":"    << hp  << ","
+        << "\"pos\":{"
+            << "\"row\":" << pos.row << ","
+            << "\"col\":" << pos.col
+        << "}"
+        << "}";
+    return oss.str();
+}
+
+// =============================================================================
+// Horde::toJson
+// Formato esperado (según statePrueba.json):
+//   {
+//     "id": "horde_0",
+//     "head_pos": {"row": 5, "col": 0},
+//     "enemies_alive": 1,
+//     "enemies": [ ... ],
+//     "killed_ids": ["enemy_0"]
+//   }
+//
+// Notas:
+//   - "head_pos" se serializa como {"row":-1,"col":-1} si la horda está vacía.
+//   - "enemies" recorre la lista de head a tail en orden.
+//   - "killed_ids" refleja el vector killed_ids acumulado por el caller
+//     (se llena externamente en remove_head() cuando el motor registra la muerte).
+// =============================================================================
+std::string Horde::toJson() const {
+    std::ostringstream oss;
+
+    // --- head_pos ---
+    // Si la horda está vacía usamos centinela (-1,-1) para no dejar el campo en null.
+    int head_row = is_empty() ? -1 : head->pos.row;
+    int head_col = is_empty() ? -1 : head->pos.col;
+
+    oss << "{"
+        << "\"id\":\""       << id   << "\","
+        << "\"head_pos\":{"
+            << "\"row\":" << head_row << ","
+            << "\"col\":" << head_col
+        << "},"
+        << "\"enemies_alive\":" << size << ",";
+
+    // --- enemies: recorre head → tail ---
+    oss << "\"enemies\":[";
+    Enemy* cur = head;
+    bool first_enemy = true;
+    while (cur != nullptr) {
+        if (!first_enemy) oss << ",";
+        oss << cur->toJson();
+        first_enemy = false;
+        cur = cur->next;
+    }
+    oss << "],";
+
+    // --- killed_ids ---
+    oss << "\"killed_ids\":[";
+    for (std::size_t i = 0; i < killed_ids.size(); ++i) {
+        if (i > 0) oss << ",";
+        oss << "\"" << killed_ids[i] << "\"";
+    }
+    oss << "]";
+
+    oss << "}";
+    return oss.str();
+}
 void Horde::print_state() const {
     std::cout << "=== Horda [" << id << "] | size=" << size
               << " | speed=" << speed << " ===" << std::endl;

@@ -12,6 +12,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <sstream>
 
 // ---------------------------------------------------------------------------
 // Posición en la cuadrícula
@@ -41,6 +42,10 @@ struct Enemy {
           int hp_max,
           int dmg,
           int atk_range);
+
+    // Serialización JSON según el formato del estado de prueba.
+    // Produce: {"id":"...","hp":N,"pos":{"row":R,"col":C}}
+    std::string toJson() const;
 };
 
 // ---------------------------------------------------------------------------
@@ -50,9 +55,10 @@ struct Horde {
     std::string id;
     Enemy* head;       // cabeza: el enemigo más adelantado (más cerca del castillo)
     Enemy* tail;       // cola:  el último en llegar
-    int size;       // cantidad actual de enemigos vivos
-    int speed;      // casillas que avanza por tick (calculado según tamaño)
-    std::vector<Pos> path;       // ruta calculada por Python
+    int size;          // cantidad actual de enemigos vivos
+    int speed;         // casillas que avanza por tick (calculado según tamaño)
+    std::vector<Pos>         path;       // ruta calculada por Python
+    std::vector<std::string> killed_ids; // IDs de enemigos eliminados este tick
     int head_path_index;
 
     // Constructor / destructor
@@ -78,4 +84,15 @@ struct Horde {
     // Utilidades
     bool  is_empty() const;
     void  print_state() const;   // útil para debug
+
+    // Serialización JSON según el formato del estado de prueba.
+    // Produce:
+    // {
+    //   "id": "...",
+    //   "head_pos": {"row": R, "col": C},
+    //   "enemies_alive": N,
+    //   "enemies": [ {toJson de cada Enemy} ],
+    //   "killed_ids": ["id0", "id1", ...]
+    // }
+    std::string toJson() const;
 };
