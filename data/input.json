@@ -1,0 +1,135 @@
+{
+    "meta": {
+        "tick": 57,
+        "phase": "action",
+        "gold": 770
+    },
+    "castle": {
+        "id": "castle_0",
+        "hp": 200,
+        "hp_max": 200,
+        "pos": {
+            "row": 0,
+            "col": 4
+        },
+        "atk_range": 2,
+        "dmg": 15
+    },
+    "towers": [
+        {
+            "id": "tower_0",
+            "pos": {
+                "row": 5,
+                "col": 4
+            },
+            "atk_range": 2,
+            "dmg": 25,
+            "hp": 100
+        },
+        {
+            "id": "tower_1",
+            "pos": {
+                "row": 4,
+                "col": 3
+            },
+            "atk_range": 2,
+            "dmg": 25,
+            "hp": 100
+        },
+        {
+            "id": "tower_2",
+            "pos": {
+                "row": 2,
+                "col": 1
+            },
+            "atk_range": 2,
+            "dmg": 25,
+            "hp": 100
+        }
+    ],
+    "horde_queue": [
+        {
+            "id": "horde_0",
+            "size": 0,
+            "path": [
+                {
+                    "row": 8,
+                    "col": 4
+                },
+                {
+                    "row": 7,
+                    "col": 4
+                },
+                {
+                    "row": 6,
+                    "col": 4
+                },
+                {
+                    "row": 6,
+                    "col": 3
+                },
+                {
+                    "row": 5,
+                    "col": 3
+                },
+                {
+                    "row": 5,
+                    "col": 2
+                },
+                {
+                    "row": 4,
+                    "col": 2
+                },
+                {
+                    "row": 3,
+                    "col": 2
+                },
+                {
+                    "row": 2,
+                    "col": 2
+                },
+                {
+                    "row": 1,
+                    "col": 2
+                },
+                {
+                    "row": 0,
+                    "col": 2
+                },
+                {
+                    "row": 0,
+                    "col": 3
+                },
+                {
+                    "row": 1,
+                    "col": 3
+                },
+                {
+                    "row": 2,
+                    "col": 3
+                },
+                {
+                    "row": 3,
+                    "col": 3
+                },
+                {
+                    "row": 3,
+                    "col": 4
+                },
+                {
+                    "row": 2,
+                    "col": 4
+                },
+                {
+                    "row": 1,
+                    "col": 4
+                },
+                {
+                    "row": 0,
+                    "col": 4
+                }
+            ],
+            "enemies": []
+        }
+    ]
+}

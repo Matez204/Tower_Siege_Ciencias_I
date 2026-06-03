@@ -122,7 +122,7 @@ Enemy* Horde::remove_head() {
     dead->next = nullptr;           
     dead->prev = nullptr;           // NUEVO: limpiamos el puntero prev del nodo retirado
     size--;
-    head_path_index--;
+
     return dead;                    
 }
 // =============================================================================
