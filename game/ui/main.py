@@ -17,7 +17,7 @@ RAIZ_PROYECTO = os.path.abspath(os.path.join(RUTA_UI, '../..'))
 if RAIZ_PROYECTO not in sys.path:
     sys.path.insert(0, RAIZ_PROYECTO)
 
-from bridge import Bridge, Pos, InputState, Tower, Castle, Horde, Enemy
+from game.bridge import Bridge, Pos, InputState, Tower, Castle, Horde, Enemy
 from game.algorithms.greedy import evaluar_amenaza_greedy
 from game.algorithms.backtracking import encontrar_ruta_backtracking
 
