@@ -12,12 +12,13 @@ import subprocess
 from dataclasses import dataclass, field
 from typing import List, Dict, Any
 
-_BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
-INPUT_PATH = os.path.join(_BASE_DIR, "data", "input.json")
-STATE_PATH = os.path.join(_BASE_DIR, "data", "state.json")
+_BASE_DIR      = os.path.dirname(os.path.abspath(__file__))
+_RAIZ_PROYECTO = os.path.abspath(os.path.join(_BASE_DIR, ".."))
+INPUT_PATH     = os.path.join(_RAIZ_PROYECTO, "data", "input.json")
+STATE_PATH     = os.path.join(_RAIZ_PROYECTO, "data", "state.json")
 # Windows usa .exe, Linux/Mac no tiene extensión
-_EXE = "tower_siege.exe" if os.name == "nt" else "tower_siege"
-ENGINE_BIN = os.path.join(_BASE_DIR, "engine", _EXE)
+_EXE           = "tower_siege.exe" if os.name == "nt" else "tower_siege"
+ENGINE_BIN     = os.path.join(_RAIZ_PROYECTO, "engine", _EXE)
 
 # ── ESTRUCTURAS DE ENTRADA (Python → C++) ────────────────────
 
@@ -141,6 +142,7 @@ class Bridge:
     def __init__(self):
         self.input_path = INPUT_PATH
         self.state_path = STATE_PATH
+        # Crear carpeta data/ si no existe
         os.makedirs(os.path.dirname(INPUT_PATH), exist_ok=True)
 
     def write_input(self, input_state: InputState):
@@ -150,10 +152,15 @@ class Bridge:
     def run_engine_tick(self) -> bool:
         if not os.path.exists(ENGINE_BIN):
             return False
+        # Correr el engine desde la raíz del proyecto para que
+        # data/input.json y data/state.json se resuelvan correctamente
+        raiz = os.path.dirname(ENGINE_BIN)  # carpeta engine/
+        raiz = os.path.abspath(os.path.join(raiz, ".."))  # subir a raíz
         result = subprocess.run(
             [ENGINE_BIN],
             capture_output=True,
-            timeout=10
+            timeout=10,
+            cwd=raiz   # directorio de trabajo = raíz del proyecto
         )
         return result.returncode == 0
 
