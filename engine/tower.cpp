@@ -3,13 +3,25 @@
 #include <sstream>
 #include <algorithm>
 
-
+// ─────────────────────────────────────────────
+// Constructor
+// ─────────────────────────────────────────────
 Torre::Torre(const std::string& id, int hp, Pos pos, int atk_range, int dmg)
     : id_(id), hp_(hp), pos_(pos), atk_range_(atk_range), dmg_(dmg) {}
 
+// ─────────────────────────────────────────────
+// Getters
+// ─────────────────────────────────────────────
+// const std::string& Torre::getId()       const { return id_; }
+// int                Torre::getHp()       const { return hp_; }
+// Pos                Torre::getPos()      const { return pos_; }
+// int                Torre::getAtkRange() const { return atk_range_; }
+// int                Torre::getDmg()      const { return dmg_; }
+// bool               Torre::isAlive()     const { return hp_ > 0; }
 
-
-
+// ─────────────────────────────────────────────
+// Combate
+// ─────────────────────────────────────────────
 
 // Distancia Manhattan entre la torre y la posición objetivo.
 // Se usa Manhattan en vez de Euclidiana porque el movimiento
@@ -35,15 +47,18 @@ bool Torre::inRange(Pos target) const {
 //            b) liberar la memoria con delete.
 //   5. Si la cabeza sobrevive o está fuera de rango → devuelve nullptr.
 Enemy* Torre::attack(Horde& horde) {
+    // Precondiciones: torre viva y horda con al menos un enemigo
     if (hp_<=0 || horde.is_empty()) return nullptr;
 
     Enemy* head = horde.head;
 
+    // Solo atacar si la cabeza está dentro del rango de ataque
     if (!inRange(head->pos)) return nullptr;
 
     // Aplicar daño
     head->hp -= dmg_;
 
+    // Si la cabeza murió, sacarla de la lista y devolver el nodo al caller
     if (head->hp <= 0) {
         head->hp = 0;
         return horde.remove_head();
@@ -58,6 +73,9 @@ void Torre::takeDamage(int amount) {
     hp_ = std::max(0, hp_ - amount);
 }
 
+// ─────────────────────────────────────────────
+// Serialización (JSON bridge con Python)
+// ─────────────────────────────────────────────
 std::string Torre::toJson() const {
     std::ostringstream oss;
     oss << "{"
