@@ -1,9 +1,12 @@
-// =============================================================================
-//  Tower Siege — Variant 1
-//  Algorithm Developer: Daniel Santiago Pérez Madera
-//  Ciencias de la Computación I — 2026-I
-//  Universidad Distrital Francisco José de Caldas
-// =============================================================================
+// ============================================================
+// Tower Siege — Variant 1
+// Engine Developer: [nombre compañero]
+// Ciencias de la Computación I — 2026-I
+// Universidad Distrital Francisco José de Caldas
+//
+// Compilar (desde carpeta engine/):
+//   g++ -std=c++17 -o tower_siege.exe main.cpp linked_list.cpp tower.cpp
+// ============================================================
  
 #include <iostream>
 #include <fstream>
@@ -13,6 +16,9 @@
 #include "linked_list.h"
 #include "torre.h"
  
+// =============================================================================
+// LECTOR JSON MANUAL
+// =============================================================================
  
 std::string leer_archivo(const std::string& path) {
     std::ifstream f(path);
@@ -86,7 +92,9 @@ std::vector<std::string> dividir_objetos(const std::string& array_str) {
     return objetos;
 }
  
-
+// =============================================================================
+// MAIN
+// =============================================================================
 int main() {
     std::string input_path = "data/input.json";
     std::string state_path = "data/state.json";
