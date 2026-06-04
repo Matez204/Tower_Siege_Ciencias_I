@@ -1,0 +1,21 @@
+{
+  "tick_result": {
+    "tick": 3,
+    "gold_earned": 30,
+    "gold_total": 130,
+    "status": "ongoing"
+  },
+  "castle_state": {
+    "id": "castle_0",
+    "hp": 200,
+    "hp_max": 200,
+    "damage_taken_this_tick": 0
+  },
+  "horde_state": [{
+    "id": "horde_0",
+    "head_pos": {"row": 6,"col": 4},
+    "enemies_alive": 2,
+    "enemies": [{"id":"","hp":80,"pos":{"row":6,"col":4}},{"id":"","hp":80,"pos":{"row":7,"col":4}}],
+    "killed_ids": [""]
+  }]
+}
