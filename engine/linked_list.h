@@ -1,8 +1,12 @@
 // =============================================================================
-//  Tower Siege — Variant 1
-//  Algorithm Developer: Daniel Santiago Pérez Madera
-//  Ciencias de la Computación I — 2026-I
-//  Universidad Distrital Francisco José de Caldas
+// Tower Siege — engine/linked_list.h
+// Equipo: [Número de equipo] | Variante: [Nombre]
+// Integrantes: [Nombres]
+//
+// Define las estructuras Enemy (nodo) y Horde (lista enlazada tipo cola).
+// La horda funciona como una QUEUE:
+//   - Encolar  → push_back()  : nuevo enemigo llega por la cola (tail)
+//   - Desencolar → remove_head(): la cabeza muere y la sigue el siguiente
 // =============================================================================
 
 #pragma once
@@ -49,18 +53,19 @@ struct Enemy {
 // ---------------------------------------------------------------------------
 struct Horde {
     std::string id;
-    Enemy* head;   
-    Enemy* tail;    
-    int size;      
-    int speed;      
-    std::vector<Pos>         path;      
-    std::vector<std::string> killed_ids;
+    Enemy* head;       // cabeza: el enemigo más adelantado (más cerca del castillo)
+    Enemy* tail;       // cola:  el último en llegar
+    int size;          // cantidad actual de enemigos vivos
+    int speed;         // casillas que avanza por tick (calculado según tamaño)
+    std::vector<Pos>         path;       // ruta calculada por Python
+    std::vector<std::string> killed_ids; // IDs de enemigos eliminados este tick
     int head_path_index;
 
     // Constructor / destructor
     Horde(const std::string& id, int speed, const std::vector<Pos>& path);
     ~Horde();   // libera todos los nodos
 
+    // --- Operaciones principales ---
 
     // Agrega un enemigo al final de la cola (nueva llegada a la horda)
     void push_back(Enemy* enemy);
